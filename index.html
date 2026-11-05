@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Manage your personal finances with Mini Budget Planner. Track income, expenses and savings with a simple interactive dashboard.">
+
+    <meta name="theme-color" content="#10251f">
+
+    <title>Mini Budget Planner | Personal Finance Dashboard</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E1GNPQ3DS1"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'G-E1GNPQ3DS1');
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.6.1/dist/chart.umd.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">💰</div>
+
+            <div class="brand-info">
+
+                <h1>Mini Budget Planner</h1>
+
+                <p>Personal Finance Dashboard</p>
+
+            </div>
+
+        </div>
+
+        <button type="button"
+                id="darkModeBtn"
+                class="theme-btn"
+                aria-label="Toggle dark mode"
+                aria-pressed="false">
+
+            🌙
+
+        </button>
+
+    </header>
+
+
+    <!-- HERO / BALANCE -->
+    <section class="balance hero-card">
+
+        <div class="hero-content">
+
+            <span class="hero-label">
+                YOUR TOTAL BALANCE
+            </span>
+
+            <h2 id="balance" aria-live="polite">
+                $0.00
+            </h2>
+
+            <p id="suggestion" aria-live="polite">
+                Start tracking your finances today.
+            </p>
+
+        </div>
+
+        <div class="hero-decoration" aria-hidden="true">
+            <span>✦</span>
+            <span>◈</span>
+            <span>✧</span>
+        </div>
+
+    </section>
+
+
+    <!-- FINANCIAL SUMMARY -->
+    <section class="dashboard">
+
+        <article class="card income-card">
+
+            <div class="summary-top">
+
+                <span class="summary-icon">↗</span>
+
+                <span class="summary-label">TOTAL INCOME</span>
+
+            </div>
+
+            <h3 id="totalIncome">$0.00</h3>
+
+            <p>Money received</p>
+
+        </article>
+
+
+        <article class="card expense-card">
+
+            <div class="summary-top">
+
+                <span class="summary-icon">↘</span>
+
+                <span class="summary-label">TOTAL EXPENSE</span>
+
+            </div>
+
+            <h3 id="totalExpense">$0.00</h3>
+
+            <p>Money spent</p>
+
+        </article>
+
+
+        <article class="card savings-card">
+
+            <div class="summary-top">
+
+                <span class="summary-icon">◇</span>
+
+                <span class="summary-label">NET SAVINGS</span>
+
+            </div>
+
+            <h3 id="totalSavings">$0.00</h3>
+
+            <p>Income minus expenses</p>
+
+        </article>
+
+    </section>
+
+
+    <!-- MAIN DASHBOARD -->
+    <section class="main-grid">
+
+
+        <!-- ADD TRANSACTION -->
+        <section class="panel input-panel">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="eyebrow">FINANCIAL RECORDS</span>
+
+                    <h2>Add Transaction</h2>
+
+                    <p>Record your income and expenses.</p>
+
+                </div>
+
+                <span class="section-icon">＋</span>
+
+            </div>
+
+
+            <form id="transactionForm" class="input-section">
+
+                <div class="field full">
+
+                    <label for="description">
+                        Transaction Description
+                    </label>
+
+                    <input
+                        type="text"
+                        id="description"
+                        placeholder="e.g. Monthly salary"
+                        maxlength="100"
+                        autocomplete="off"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label for="amount">
+                        Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        id="amount"
+                        placeholder="Enter amount"
+                        min="0.01"
+                        max="1000000000000"
+                        step="any"
+                        inputmode="decimal"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="date">
+                        Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="date"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="currency">
+                        Currency
+                    </label>
+
+                    <select id="currency">
+
+                        <option value="USD">USD ($)</option>
+                        <option value="LKR">LKR (Rs.)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                        <option value="INR">INR (₹)</option>
+                        <option value="JPY">JPY (¥)</option>
+                        <option value="CHF">CHF</option>
+                        <option value="CAD">CAD ($)</option>
+                        <option value="AUD">AUD ($)</option>
+                        <option value="CNY">CNY (¥)</option>
+                        <option value="RUB">RUB (₽)</option>
+                        <option value="BRL">BRL (R$)</option>
+                        <option value="ZAR">ZAR (R)</option>
+                        <option value="SGD">SGD ($)</option>
+                        <option value="HKD">HKD ($)</option>
+                        <option value="NZD">NZD ($)</option>
+                        <option value="KRW">KRW (₩)</option>
+                        <option value="MXN">MXN ($)</option>
+                        <option value="TRY">TRY (₺)</option>
+                        <option value="SAR">SAR (ر.س)</option>
+                        <option value="AED">AED (د.إ)</option>
+                        <option value="DZD">DZD (دج)</option>
+                        <option value="AOA">AOA (Kz)</option>
+                        <option value="BWP">BWP (P)</option>
+                        <option value="EGP">EGP (£)</option>
+                        <option value="GHS">GHS (₵)</option>
+
+                    </select>
+
+                </div>
+
+
+                <small id="currencyHelp" class="field-help">
+                    All transactions must use the same currency.
+                </small>
+
+
+                <div class="field full">
+
+                    <label for="category">
+                        Category
+                    </label>
+
+                    <select id="category">
+
+                        <option value="Salary">Salary</option>
+                        <option value="Business">Business</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Education">Education</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Other">Other</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label for="type">
+                        Transaction Type
+                    </label>
+
+                    <select id="type">
+
+                        <option value="income">Income</option>
+
+                        <option value="expense">Expense</option>
+
+                    </select>
+
+                </div>
+
+
+                <button type="submit"
+                        id="addBtn"
+                        class="add-button">
+
+                    <span>＋</span>
+                    Add Transaction
+
+                </button>
+
+            </form>
+
+
+            <p id="statusMessage"
+               class="status-message"
+               role="status"
+               aria-live="polite"></p>
+
+        </section>
+
+
+        <!-- CHART -->
+        <section class="panel chart-section">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="eyebrow">YOUR FINANCES</span>
+
+                    <h2>Financial Overview</h2>
+
+                    <p>Income compared with expenses.</p>
+
+                </div>
+
+                <span class="section-icon">◉</span>
+
+            </div>
+
+
+            <div class="chart-wrapper">
+
+                <canvas id="chart"
+                        role="img"
+                        aria-label="Income and expense doughnut chart">
+
+                </canvas>
+
+                <p id="chartEmpty" class="chart-empty">
+                    Add transactions to view your financial overview.
+                </p>
+
+            </div>
+
+
+            <div class="chart-legend">
+
+                <div>
+
+                    <span class="legend-dot income-dot"></span>
+
+                    <span>Income</span>
+
+                </div>
+
+                <div>
+
+                    <span class="legend-dot expense-dot"></span>
+
+                    <span>Expenses</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </section>
+
+
+    <!-- TRANSACTIONS -->
+    <section class="panel transactions-panel">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="eyebrow">ACTIVITY HISTORY</span>
+
+                <h2>Recent Transactions</h2>
+
+                <p>Manage your recorded financial activities.</p>
+
+            </div>
+
+            <span id="transactionCount" class="count-badge">
+                0 transactions
+            </span>
+
+        </div>
+
+
+        <ul id="transactions"
+            aria-live="polite">
+
+        </ul>
+
+
+        <p id="emptyTransactions" class="empty-state">
+
+            No transactions yet.
+
+            <br>
+
+            Add your first transaction to get started.
+
+        </p>
+
+    </section>
+
+
+    <!-- BUDGET ACTIONS -->
+    <section class="budget-actions">
+
+        <button type="button" id="saveBtn" class="action-button save-button">
+
+            💾 Save Budget
+
+        </button>
+
+
+        <button type="button" id="downloadBtn" class="action-button download-button">
+
+            ⬇ Download CSV
+
+        </button>
+
+
+        <button type="button" id="printBtn" class="action-button print-button">
+
+            🖨 Print Report
+
+        </button>
+
+
+        <button type="button" id="clearBtn" class="action-button clear-button">
+
+            Clear All
+
+        </button>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+     
+
+        <span>Mini Budget Planner © 2026</span>
+
+        <small>
+            Your budget data is stored locally in this browser.
+        </small>
+
+    </footer>
+
+
+</div>
+
+
+<!-- JavaScript -->
+<script src="script.js"></script>
+
+</body>
+</html>
